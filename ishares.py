@@ -1,10 +1,10 @@
-s = '24/mei/2018'
-def dutch_date(s):
-    d, m, y = s.split('/')
-    return date(int(y), MONTHS[m], int(d))
-
 
 from datetime import date
+import xml.etree.ElementTree as ET
+
+from requests import Session
+from pandas import DataFrame, to_numeric
+
 MONTHS = {
     'jan': 1,
     'feb': 2,
@@ -17,31 +17,31 @@ MONTHS = {
     'sep': 9,
     'okt': 10,
     'nov': 11,
-    'dec': 12,    
+    'dec': 12,
 }
 
-import xml.etree.ElementTree  as ET
-from pandas import read_excel, read_html
-from lxml import etree
+def site_session():
 
-from pathlib import Path
-xls_orig = Path('/home/giovanni/tools/ishares/data/iShares-MSCI-Europe-UCITS-ETF-EUR-Acc_fund.xls')
+    s = Session()
+    s.get('https://www.ishares.com/nl/particuliere-belegger/nl/?siteEntryPassthrough=true&locale=nl_NL&userType=individual')
+    return s
 
 
-from pandas import DataFrame, to_datetime
-
-euro = read_ishares(d)
+def dutch_date(s):
+    d, m, y = s.split('/')
+    return date(int(y), MONTHS[m], int(d))
 
 
 def read_ishares(d):
-    root = etree.fromstring(d)
+    d = d.replace('&euml;', 'ë')
+    d = d.replace('</Style>', '</ss:Style>')
 
     root = ET.fromstring(d)
     ns = root.tag[:-8]
 
     for worksheet in root:
         if worksheet.tag == ns + 'Worksheet':
-            if worksheet.attrib[namespace + 'Name'] == 'Historisch':
+            if worksheet.attrib[ns + 'Name'] == 'Historisch':
                 break
 
     table = next(iter(worksheet))
@@ -56,13 +56,8 @@ def read_ishares(d):
 
     df = DataFrame(worksheets)
     df.columns = df.iloc[0]
-    df = df.reindex(df.index.drop(0))    
+    df = df.reindex(df.index.drop(0))
     df['Per'] = df['Per'].apply(dutch_date)
+    cols = list(df)[2:]
+    df[cols] = df[cols].apply(to_numeric, errors='coerce', axis=1)
     return df
-
-
-with xls_orig.open('r', encoding='utf-8-sig') as f:
-    d = f.read()
-    
-d = d.replace('&euml;', 'ë')
-d = d.replace('</Style>', '</ss:Style>')
