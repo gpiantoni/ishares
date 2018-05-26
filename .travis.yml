@@ -22,6 +22,7 @@ install:
 
 script:
  - pytest --cov=ishares tests/
+ - ls -lR
 
 after_success:
  - codecov
