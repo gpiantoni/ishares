@@ -1,8 +1,6 @@
-
 from datetime import date
 import xml.etree.ElementTree as ET
 
-from requests import Session
 from pandas import DataFrame, to_numeric
 
 MONTHS = {
@@ -20,31 +18,34 @@ MONTHS = {
     'dec': 12,
 }
 
-def site_session():
-
-    s = Session()
-    s.get('https://www.ishares.com/nl/particuliere-belegger/nl/?siteEntryPassthrough=true&locale=nl_NL&userType=individual')
-    return s
-
 
 def dutch_date(s):
     d, m, y = s.split('/')
     return date(int(y), MONTHS[m], int(d))
 
+class WorkSheets():
+    def __init__(self, raw):
+        self.raw = _fix_xls(raw)
+        self.root = ET.fromstring(self.raw)
+        self.ns = self.root.tag[:-8]
+
+    def _get_worksheet(self, name):
+        for worksheet in sel.froot:
+            if worksheet.tag == self.ns + 'Worksheet':
+                if worksheet.attrib[ns + 'Name'] == 'Historisch':
+                    break
+
+        table = next(iter(worksheet))
+
+def _fix_xls(raw):
+    raw = raw.replace('&euml;', 'ë')
+    raw = raw.replace('</Style>', '</ss:Style>')
+    return raw
+
 
 def read_ishares(d):
-    d = d.replace('&euml;', 'ë')
-    d = d.replace('</Style>', '</ss:Style>')
 
-    root = ET.fromstring(d)
-    ns = root.tag[:-8]
 
-    for worksheet in root:
-        if worksheet.tag == ns + 'Worksheet':
-            if worksheet.attrib[ns + 'Name'] == 'Historisch':
-                break
-
-    table = next(iter(worksheet))
 
     worksheets = []
     for row in table:
