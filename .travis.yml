@@ -6,7 +6,7 @@ python:
 env:
   global:
    - DOWNLOADS=$HOME/downloads
-   - HTML_PATH=docs/build/html
+   - HTML_PATH=report/html
 
 cache: 
  - directories:
@@ -17,6 +17,7 @@ install:
  # install requirements
  - pip install pandas requests
  - pip install pytest pytest-cov codecov plotly
+ - pip install docutils
  - pip install -e .
 
 script:
@@ -27,3 +28,11 @@ after_success:
 
 notifications:
  email: false
+
+deploy:
+ - provider: pages
+   skip_cleanup: true
+   target_branch : master
+   local_dir : $HTML_PATH
+   repo : gpiantoni/ishares_report
+   github_token : $GITHUB_TOKEN
