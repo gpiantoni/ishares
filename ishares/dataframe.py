@@ -60,10 +60,10 @@ def _convert_to_df(worksheet, name):
     df = df.reindex(df.index.drop(0))
 
     if name == 'Historisch':
-        DATE_COLS = ['Per', ]
-        FLOAT_COLS = [list(df)[2:]]
+        DATE_COL = 'Per'
+        FLOAT_COLS = list(df)[2:]
 
-    df[DATE_COLS] = df[DATE_COLS].apply(_to_date)
+    df[DATE_COL] = df[DATE_COL].apply(_to_date)
     df[FLOAT_COLS] = df[FLOAT_COLS].apply(to_numeric, errors='coerce', axis=1)
 
     return df
