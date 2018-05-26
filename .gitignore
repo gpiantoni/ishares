@@ -1,0 +1,6 @@
+*.ipynb
+.ipynb_checkpoints/
+
+.pytest_cache/
+.coverage
+htmlcov/

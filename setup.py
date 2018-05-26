@@ -5,13 +5,13 @@ VERSION = '0.1'
 long_description = ''
 
 setup(
-    name='wonambi',
+    name='ishares',
     version=VERSION,
-    description='Tools for EEG, ECoG, iEEG, especially for sleep',
+    description='',
     long_description=long_description,
-    url='https://github.com/wonambi-python/wonambi',
-    author="Gio Piantoni / Jordan O'Byrne",
-    author_email='wonambi@gpiantoni.com',
+    url='https://github.com/gpiantoni/ishares',
+    author="Gio Piantoni",
+    author_email='ishares@gpiantoni.com',
     license='GPLv3',
     classifiers=[
         'Development Status :: 4 - Beta',
