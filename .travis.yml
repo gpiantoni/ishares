@@ -35,5 +35,6 @@ deploy:
    skip_cleanup: true
    target_branch : master
    local_dir : $HTML_PATH
-   repo : gpiantoni/ishares_report
+   repo : gpiantoni/ishares
+   target_branch : gh-pages
    github_token : $GITHUB_TOKEN
