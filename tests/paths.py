@@ -1,6 +1,6 @@
 from pathlib import Path
 
-fund_id = '251861'
+FUND_ID = '251861'
 
 ROOT_PATH = Path(__file__).resolve().parents[1]
 

@@ -27,14 +27,7 @@ class WorkSheets():
 
     def read_worksheet(self, name):
         table = self._get_worksheet(name)
-
-        worksheet = []
-        for row in table:
-            one_row = []
-            for cell in row:
-                one_row.append(next(iter(cell)).text)
-
-            worksheet.append(one_row)
+        worksheet = _read_worksheet(table, self.ns)
 
         return _convert_to_df(worksheet, name)
 
@@ -59,6 +52,10 @@ def _convert_to_df(worksheet, name):
     df.columns = df.iloc[0]
     df = df.reindex(df.index.drop(0))
 
+    return _fix_df(df)
+
+
+def _fix_df(df, name):
     if name == 'Historisch':
         DATE_COL = 'Per'
         FLOAT_COLS = list(df)[2:]
@@ -72,3 +69,34 @@ def _convert_to_df(worksheet, name):
 def _to_date(s):
     d, m, y = s.split('/')
     return date(int(y), MONTHS[m], int(d))
+
+
+def _read_worksheet(table, ns):
+    double_header = False
+    worksheet = []
+    for row in table:
+
+        if double_header:
+            one_row = worksheet[-1]
+            del worksheet[-1]
+        else:
+            one_row = []
+
+        for cell in row:
+            text = next(iter(cell)).text
+            times = int(cell.attrib.get(ns + 'MergeAcross', '0')) + 1
+
+            if (ns + 'MergeDown') in cell.attrib:
+                double_header = True
+
+            if (ns + 'Index') in cell.attrib:
+                index = int(cell.attrib[ns + 'Index']) - 1
+                one_row[index] = one_row[index] + ' (' + text + ')'
+                double_header = False
+
+            else:
+                for i in range(times):
+                    one_row.append(text)
+
+        worksheet.append(one_row)
+    return worksheet
