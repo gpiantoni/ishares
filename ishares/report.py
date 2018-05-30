@@ -1,4 +1,37 @@
 import plotly.graph_objs as go
+from plotly.offline import plot
+from docutils.core import publish_file
+
+from .constants.paths import PLOTLY_PATH, SRC_PATH, HTML_PATH
+
+
+REPORT_NAV = """
+.. raw:: html
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+.. raw:: html
+    :file: img/{fig_name}.html
+"""
+
+
+def write_report(fig, fund_id):
+
+    fig_name = fund_id + '_NAV'
+    save_plotly_fig(fig, fig_name)
+    report = REPORT_NAV.format(fig_name=fig_name)
+
+    rst_file = SRC_PATH / (fund_id + '.rst')
+    html_file = HTML_PATH / (fund_id + '.html')
+
+    with rst_file.open('w') as f:
+        f.write(report)
+
+    publish_file(
+        source_path=str(rst_file),
+        destination_path=str(html_file)
+        )
+
 
 def create_fig(df):
     trace1 = go.Scatter(
@@ -31,3 +64,9 @@ def create_fig(df):
     )
     fig = go.Figure(data=data, layout=layout)
     return fig
+
+
+def save_plotly_fig(fig, name):
+    div = plot(fig, include_plotlyjs=False, output_type='div', show_link=False)
+    with (PLOTLY_PATH / (name + '.html')).open('w') as f:
+        f.write(div)
