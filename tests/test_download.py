@@ -14,6 +14,8 @@ def test_download():
     df = w.read_worksheet('Historisch')
     assert len(df.columns) == 7
 
+    df.to_pickle('/home/giovanni/tools/ishares/tests/download/251861.pkl')
+
     fig = create_fig(df)
     save_plotly_fig(fig, 'interactive')
     publish_file(
