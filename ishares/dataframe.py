@@ -25,6 +25,14 @@ class WorkSheets():
         self.root = ET.fromstring(self.raw)
         self.ns = self.root.tag[:-8]  # TODO: find a better way
 
+    @property
+    def worksheets(self):
+        names = []
+        for worksheet in self.root:
+            if worksheet.tag == self.ns + 'Worksheet':
+                names.append(worksheet.attrib[self.ns + 'Name'])
+        return names
+
     def read_worksheet(self, name):
         table = self._get_worksheet(name)
         worksheet = _read_worksheet(table, self.ns)
@@ -48,20 +56,39 @@ def _fix_xls(raw):
 
 
 def _convert_to_df(worksheet, name):
+    if name == 'Posities':
+        del worksheet[0]
+
+    elif name == 'Performance':
+        del worksheet[:4]
+
     df = DataFrame(worksheet)
+
     df.columns = df.iloc[0]
     df = df.reindex(df.index.drop(0))
 
-    return _fix_df(df)
+    return _fix_df(df, name)
 
 
 def _fix_df(df, name):
-    if name == 'Historisch':
+    DATE_COL = None
+    FLOAT_COLS = None
+
+    if name == 'Posities':
+        FLOAT_COLS = ['Weging (%)', ]
+
+    elif name == 'Performance':
+        DATE_COL = 'Einde maand'
+        FLOAT_COLS = ['Rendement per maand', ]
+
+    elif name == 'Historisch':
         DATE_COL = 'Per'
         FLOAT_COLS = list(df)[2:]
 
-    df[DATE_COL] = df[DATE_COL].apply(_to_date)
-    df[FLOAT_COLS] = df[FLOAT_COLS].apply(to_numeric, errors='coerce', axis=1)
+    if DATE_COL is not None:
+        df[DATE_COL] = df[DATE_COL].apply(_to_date)
+    if FLOAT_COLS is not None:
+        df[FLOAT_COLS] = df[FLOAT_COLS].apply(to_numeric, errors='coerce', axis=1)
 
     return df
 
