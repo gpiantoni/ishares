@@ -1,7 +1,7 @@
 from datetime import date
 import xml.etree.ElementTree as ET
 
-from pandas import DataFrame, to_numeric
+from pandas import DataFrame, to_numeric, to_datetime
 
 MONTHS = {
     'jan': 1,
@@ -51,7 +51,8 @@ class WorkSheets():
 
 def _fix_xls(raw):
     raw = raw.replace('&euml;', 'ë')
-    raw = raw.replace('</Style>', '</ss:Style>')
+    if '<ss:Style>' in raw:
+        raw = raw.replace('</Style>', '</ss:Style>')
     return raw
 
 
@@ -71,22 +72,29 @@ def _convert_to_df(worksheet, name):
 
 
 def _fix_df(df, name):
-    DATE_COL = None
+    LOCALE_DATE_COLS = None  # those in Dutch locale format (09-mar-2018)
+    DATE_COLS = None  # other dates that can be parsed by pandas
     FLOAT_COLS = None
 
     if name == 'Posities':
         FLOAT_COLS = ['Weging (%)', ]
 
     elif name == 'Performance':
-        DATE_COL = 'Einde maand'
+        LOCALE_DATE_COLS = ['Einde maand', ]
         FLOAT_COLS = ['Rendement per maand', ]
 
     elif name == 'Historisch':
-        DATE_COL = 'Per'
+        LOCALE_DATE_COLS = ['Per', ]
         FLOAT_COLS = list(df)[2:]
 
-    if DATE_COL is not None:
-        df[DATE_COL] = df[DATE_COL].apply(_to_date)
+    elif name == 'iShares ETFs':
+        DATE_COLS = ['Introductiedatum', 'NAV per', '12 maanden (Per)', 'op jaarbasis (NAV per)', 'Cumulatief (NAV per)']
+        FLOAT_COLS = ['Netto-activa', 'TER', 'NAV', 'Index-niveau', ]
+
+    if LOCALE_DATE_COLS is not None:
+        df[LOCALE_DATE_COLS] = df[LOCALE_DATE_COLS].applymap(_to_date)
+    if DATE_COLS is not None:
+        df[DATE_COLS] = df[DATE_COLS].apply(to_datetime, errors='coerce', axis=1)
     if FLOAT_COLS is not None:
         df[FLOAT_COLS] = df[FLOAT_COLS].apply(to_numeric, errors='coerce', axis=1)
 
