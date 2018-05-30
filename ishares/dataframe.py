@@ -1,6 +1,5 @@
 from datetime import date
 import xml.etree.ElementTree as ET
-from html import unescape, escape
 
 from pandas import DataFrame, to_numeric, to_datetime
 
@@ -59,8 +58,9 @@ class WorkSheets():
 
 
 def _fix_xls(raw):
-    raw = unescape(raw)
-    raw = raw.replace('&', '&amp;')
+    raw = raw.replace('&euml;', 'ë')
+    raw = raw.replace('&reg;', '®')
+    raw = raw.replace('&euro;', '€')
     if '<ss:Style' in raw:
         raw = raw.replace('</Style>', '</ss:Style>')
     return raw
