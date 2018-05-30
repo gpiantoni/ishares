@@ -1,10 +1,6 @@
 from ishares.scrape import download_fund, download_all
-from ishares.dataframe import WorkSheets
-from ishares.report import create_fig
 
-
-from .utils import save_plotly_fig
-from .paths import HTML_PATH, SRC_PATH, DOWNLOAD_PATH, FUND_ID
+from .paths import DOWNLOAD_PATH, FUND_ID
 
 
 def test_download_fund():
