@@ -51,7 +51,7 @@ class WorkSheets():
 
 def _fix_xls(raw):
     raw = raw.replace('&euml;', 'ë')
-    if '<ss:Style>' in raw:
+    if '<ss:Style' in raw:
         raw = raw.replace('</Style>', '</ss:Style>')
     return raw
 
