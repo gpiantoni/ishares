@@ -1,6 +1,11 @@
 from pathlib import Path
 
+fund_id = '251861'
+
 ROOT_PATH = Path(__file__).resolve().parents[1]
+
+DOWNLOAD_PATH = Path(__file__).resolve().parent / 'download'
+DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
 
 SRC_PATH = ROOT_PATH / 'report/src'
 SRC_PATH.mkdir(parents=True, exist_ok=True)
