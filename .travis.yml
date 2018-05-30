@@ -21,7 +21,7 @@ install:
  - pip install -e .
 
 script:
- - pytest --cov=ishares tests/
+ - pytest --cov=ishares tests/ -vv
  - ls -lR
 
 after_success:

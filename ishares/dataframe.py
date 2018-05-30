@@ -1,7 +1,10 @@
 from datetime import date
 import xml.etree.ElementTree as ET
+from html import unescape, escape
 
 from pandas import DataFrame, to_numeric, to_datetime
+
+from .constants.paths import ERROR_PATH
 
 MONTHS = {
     'jan': 1,
@@ -22,7 +25,13 @@ MONTHS = {
 class WorkSheets():
     def __init__(self, raw):
         self.raw = _fix_xls(raw)
-        self.root = ET.fromstring(self.raw)
+        try:
+            self.root = ET.fromstring(self.raw)
+        except Exception as err:
+            with (ERROR_PATH / ('error.xls')).open('w') as f:
+                f.write(self.raw)
+            raise Exception(err)
+
         self.ns = self.root.tag[:-8]  # TODO: find a better way
 
     @property
@@ -50,7 +59,8 @@ class WorkSheets():
 
 
 def _fix_xls(raw):
-    raw = raw.replace('&euml;', 'ë')
+    raw = unescape(raw)
+    raw = raw.replace('&', '&amp;')
     if '<ss:Style' in raw:
         raw = raw.replace('</Style>', '</ss:Style>')
     return raw

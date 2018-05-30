@@ -29,6 +29,9 @@ class Fund():
         self.ws = WorkSheets(content)
         self.df = self.ws.read_worksheet('Historisch')
 
+    def plot(self):
+        return create_fig(self.df)
+
     def report(self):
         fig = create_fig(self.df)
         write_report(fig, self.code)

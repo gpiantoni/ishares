@@ -1,3 +1,6 @@
+report/
+tests/download/
+
 *.ipynb
 .ipynb_checkpoints/
 

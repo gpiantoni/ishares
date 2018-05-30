@@ -2,6 +2,8 @@ from pathlib import Path
 
 ROOT_PATH = Path(__file__).resolve().parents[2]
 
+ERROR_PATH = ROOT_PATH / 'ishares' / 'downloaded'
+
 REPORT_PATH = ROOT_PATH / 'report'
 
 SRC_PATH = REPORT_PATH / 'src'
