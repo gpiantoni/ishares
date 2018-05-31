@@ -16,7 +16,14 @@ class iShares():
         self.df.insert(0, 'id', import_fund_ids())
 
     def get_fund(self, code):
-        fund_id = self.df.loc[self.df['Product-\ncode'] == code, 'id'].item()
+        funds = self.df.loc[self.df['Product-\ncode'] == code, 'id']
+
+        if len(funds) == 0:
+            raise ValueError(f'Could not find any ETF matching {code}')
+        elif len(funds) > 1:
+            raise ValueError(f'Multiple ETFs matching {code}, use id= or isin=')
+
+        fund_id = funds.item()
         return Fund(fund_id, code)
 
 
