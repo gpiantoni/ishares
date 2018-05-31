@@ -28,20 +28,20 @@ class iShares():
             idx = self.df['ISIN'] == isin
             args_name = f'isin="{isin}"'
 
-        funds = self.df.loc[idx, 'id']
+        funds = self.df.loc[idx, ]
         if len(funds) == 0:
             raise ValueError(f'Could not find any ETF matching {args_name}')
         elif len(funds) > 1:
             raise ValueError(f'Multiple ETFs matching {code}, use fund_id= or isin=')
 
-        fund_id = funds.item()
-        return Fund(fund_id, code)
+        name = funds['Product-\ncode'].item() + '_' + funds['ISIN'].item()
+        return Fund(funds['id'].item(), name)
 
 
 class Fund():
-    def __init__(self, fund_id, code):
+    def __init__(self, fund_id, name):
         self.id = fund_id
-        self.code = code
+        self.name = name
 
         content = download_fund(fund_id)
         self.ws = WorkSheets(content)
@@ -52,4 +52,4 @@ class Fund():
 
     def report(self):
         fig = create_fig(self.df)
-        write_report(fig, self.code)
+        write_report(fig, self.name)
