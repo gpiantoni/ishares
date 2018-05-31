@@ -97,6 +97,10 @@ def _fix_df(df, name):
         LOCALE_DATE_COLS = ['Per', ]
         FLOAT_COLS = list(df)[2:]
 
+    elif name == 'Uitkeringen':
+        LOCALE_DATE_COLS = ['Aankondigingsdatum', 'Ex-datum', 'Uitkeringsdatum', 'Boekdatum']
+        FLOAT_COLS = ['Totale uitkering', ]
+
     elif name == 'iShares ETFs':
         DATE_COLS = ['Introductiedatum', 'NAV per', '12 maanden (Per)', 'op jaarbasis (NAV per)', 'Cumulatief (NAV per)']
         FLOAT_COLS = ['Netto-activa', 'TER', 'NAV', 'Index-niveau', ]

@@ -11,6 +11,9 @@ def test_interface():
     fund = all_etfs.get_fund('IMAE')
     fund.report()
 
+    fund = all_etfs.get_fund('IBGX')
+    fund.report()
+
     fund = all_etfs.get_fund('CSPX')
     fund.report()
 
