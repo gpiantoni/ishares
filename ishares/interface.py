@@ -15,13 +15,24 @@ class iShares():
         self.df = self.ws.read_worksheet('iShares ETFs')
         self.df.insert(0, 'id', import_fund_ids())
 
-    def get_fund(self, code):
-        funds = self.df.loc[self.df['Product-\ncode'] == code, 'id']
+    def get_fund(self, code=None, fund_id=None, isin=None):
+        if code is not None:
+            idx = self.df['Product-\ncode'] == code
+            args_name = f'code="{code}"'
 
+        elif fund_id is not None:
+            idx = self.df['id'] == fund_id
+            args_name = f'fund_id="{fund_id}"'
+
+        elif isin is not None:
+            idx = self.df['ISIN'] == isin
+            args_name = f'isin="{isin}"'
+
+        funds = self.df.loc[idx, 'id']
         if len(funds) == 0:
-            raise ValueError(f'Could not find any ETF matching {code}')
+            raise ValueError(f'Could not find any ETF matching {args_name}')
         elif len(funds) > 1:
-            raise ValueError(f'Multiple ETFs matching {code}, use id= or isin=')
+            raise ValueError(f'Multiple ETFs matching {code}, use fund_id= or isin=')
 
         fund_id = funds.item()
         return Fund(fund_id, code)
