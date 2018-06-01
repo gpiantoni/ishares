@@ -29,7 +29,8 @@ def write_report(fig, fund_id):
 
     publish_file(
         source_path=str(rst_file),
-        destination_path=str(html_file)
+        destination_path=str(html_file),
+        writer_name='html',
         )
 
 

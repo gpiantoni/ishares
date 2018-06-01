@@ -104,7 +104,7 @@ def _fix_df(df, name):
 
     elif name == 'iShares ETFs':
         DATE_COLS = ['Introductiedatum', 'NAV per', '12 maanden (Per)', 'op jaarbasis (NAV per)', 'Cumulatief (NAV per)']
-        FLOAT_COLS = ['Netto-activa', 'TER', 'NAV', 'Index-niveau', ]
+        FLOAT_COLS = ['Netto-activa', 'TER', 'NAV', 'Index-niveau', 'Aantal uitstaande aandelen', 'op jaarbasis (5 jr. (%))', 'Kenmerken (Uitkeringsrendement (%))']
 
     if LOCALE_DATE_COLS is not None:
         df[LOCALE_DATE_COLS] = df[LOCALE_DATE_COLS].applymap(_to_date)

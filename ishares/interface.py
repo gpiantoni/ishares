@@ -4,6 +4,7 @@
 from .dataframe import WorkSheets
 from .scrape import download_fund, download_all, import_fund_ids
 from .report import create_fig, write_report
+from .report_all import report_ishares
 
 
 class iShares():
@@ -36,6 +37,9 @@ class iShares():
 
         name = funds['Product-\ncode'].item() + '_' + funds['ISIN'].item()
         return Fund(funds['id'].item(), name)
+
+    def report(self):
+        report_ishares(self.df)
 
 
 class Fund():
