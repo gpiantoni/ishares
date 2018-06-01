@@ -3,6 +3,8 @@ from pathlib import Path
 ROOT_PATH = Path(__file__).resolve().parents[2]
 
 ERROR_PATH = ROOT_PATH / 'ishares' / 'downloaded'
+ERROR_PATH.mkdir(parents=True, exist_ok=True)
+DATA_PATH = ROOT_PATH / 'ishares' / 'data'
 
 REPORT_PATH = ROOT_PATH / 'report'
 

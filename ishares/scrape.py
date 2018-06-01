@@ -54,7 +54,7 @@ def import_fund_ids():
     ----
     path to fund_all.txt
     """
-    funds_txt = Path(__file__).parent / 'constants' / 'fund_all.txt'
+    funds_txt = Path(__file__).parent / 'data' / 'fund_all.txt'
     with funds_txt.open() as f:
         portfolios = f.read().split('\n')
     return portfolios
