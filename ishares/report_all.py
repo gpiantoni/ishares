@@ -39,10 +39,10 @@ def report_ishares(df):
     html_file = HTML_PATH / ('index' + '.html')
 
     degiro_isin = list(DEGIRO['ISIN'])
-    torst = df.loc[
+    idx = (
         df['ISIN'].isin(degiro_isin) &
-        (df['Gebruik van\ninkomsten'] == 'Herbeleggend'),
-        COLS].sort_values('TER')
+        (df['Gebruik van\ninkomsten'] == 'Herbeleggend'))
+    torst = df.loc[idx, COLS].sort_values('TER')
 
     torst['ISIN'] = torst.apply(lambda x: f'`{x["ISIN"]} <{x["Code"]}_{x["ISIN"]}.html>`_', axis=1)
 
@@ -72,3 +72,5 @@ def report_ishares(df):
         source_path=str(rst_file),
         destination_path=str(html_file),
         writer_name='html')
+
+    return df.loc[idx]

@@ -8,14 +8,7 @@ all_etfs = None
 def test_interface():
     global all_etfs
     all_etfs = iShares()
-    fund = all_etfs.get_fund('IMAE')
-    fund.report()
-
-    fund = all_etfs.get_fund('IBGX')
-    fund.report()
-
-    fund = all_etfs.get_fund('CSPX')
-    fund.report()
+    all_etfs.report()
 
 
 def test_interface_isin():

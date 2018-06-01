@@ -18,7 +18,7 @@ class iShares():
 
     def get_fund(self, code=None, fund_id=None, isin=None):
         if code is not None:
-            idx = self.df['Product-\ncode'] == code
+            idx = self.df['Code'] == code
             args_name = f'code="{code}"'
 
         elif fund_id is not None:
@@ -35,11 +35,14 @@ class iShares():
         elif len(funds) > 1:
             raise ValueError(f'Multiple ETFs matching {code}, use fund_id= or isin=')
 
-        name = funds['Product-\ncode'].item() + '_' + funds['ISIN'].item()
+        name = funds['Code'].item() + '_' + funds['ISIN'].item()
         return Fund(funds['id'].item(), name)
 
     def report(self):
-        report_ishares(self.df)
+        df = report_ishares(self.df)
+        for isin in df['ISIN']:
+            fund = self.get_fund(isin=isin)
+            fund.report()
 
 
 class Fund():
