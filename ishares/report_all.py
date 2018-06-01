@@ -5,7 +5,8 @@ from .constants.paths import SRC_PATH, HTML_PATH
 
 
 COLS = [
-    'Product-\ncode', 'ISIN',
+    'Code',
+    'ISIN',
     'Naam en aandelenklasse',
     'TER', 'Methodologie',
     'Beleggingscategorie', 'Sector / Thema', 'Regio', 'Basis-\nvaluta',
@@ -42,7 +43,8 @@ def report_ishares(df):
         df['ISIN'].isin(degiro_isin) &
         (df['Gebruik van\ninkomsten'] == 'Herbeleggend'),
         COLS].sort_values('TER')
-    torst
+
+    torst['ISIN'] = torst.apply(lambda x: f'`{x["ISIN"]} <{x["Code"]}_{x["ISIN"]}.html>`_', axis=1)
 
     col_len = []
     for row in torst:

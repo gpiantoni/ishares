@@ -103,6 +103,9 @@ def _fix_df(df, name):
         FLOAT_COLS = ['Totale uitkering', ]
 
     elif name == 'iShares ETFs':
+        df.rename(columns={
+            'Product-\ncode': 'Code',
+            }, inplace=True)
         DATE_COLS = ['Introductiedatum', 'NAV per', '12 maanden (Per)', 'op jaarbasis (NAV per)', 'Cumulatief (NAV per)']
         FLOAT_COLS = ['Netto-activa', 'TER', 'NAV', 'Index-niveau', 'Aantal uitstaande aandelen', 'op jaarbasis (5 jr. (%))', 'Kenmerken (Uitkeringsrendement (%))']
 
