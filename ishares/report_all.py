@@ -41,7 +41,7 @@ def report_ishares(df):
     degiro_isin = list(DEGIRO['ISIN'])
     idx = (
         df['ISIN'].isin(degiro_isin) &
-        (df['Gebruik van\ninkomsten'] == 'Herbeleggend'))
+        (df['TER'] <= 0.3))
     torst = df.loc[idx, COLS].sort_values('TER')
 
     torst['ISIN'] = torst.apply(lambda x: f'`{x["ISIN"]} <{x["Code"]}_{x["ISIN"]}.html>`_', axis=1)
