@@ -11,14 +11,14 @@ COLS = [
     'TER', 'Methodologie',
     'Beleggingscategorie', 'Sector / Thema', 'Regio', 'Basis-\nvaluta',
     'Markt', 'Strategieën', 'Land', 'Aandelen-\nklasse',
-    'Aantal uitstaande aandelen',
+    'Netto-activa',
     'op jaarbasis (5 jr. (%))', 'Kenmerken (Uitkeringsrendement (%))'
 ]
 
 
 FORMAT = {
     'TER': '{:5.2f}',
-    'Aantal uitstaande aandelen': '{:10.0f}',
+    'Netto-activa': '{:10.3f}B',
     'op jaarbasis (5 jr. (%))': '{:5.2f}',
     'Kenmerken (Uitkeringsrendement (%))': '{:5.2f}',
     }
