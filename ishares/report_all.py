@@ -46,24 +46,7 @@ def report_ishares(df):
 
     torst['ISIN'] = torst.apply(lambda x: f'`{x["ISIN"]} <{x["Code"]}_{x["ISIN"]}.html>`_', axis=1)
 
-    col_len = []
-    for row in torst:
-        format_ = FORMAT.get(row, '{}')
-        col_len.append(
-            max([len(format_.format(x)) for x in torst[row]] + [len(row), ])
-            )
-
-    formatter = ' '.join('{:<%d}' % c for c in col_len)
-
-    all_rows = []
-    for row in torst.iterrows():
-        ROW = _row2str(FORMAT, row)
-        good_row = formatter.format(*ROW)
-        all_rows.append(good_row)
-
-    separator = ' '.join(['=' * c for c in col_len])
-    header = formatter.format(*[x.replace('\n', ' ') for x in torst])
-    rst = [separator, header, separator] + all_rows + [separator, ]
+    rst = _prepare_table(torst, FORMAT)
 
     with rst_file.open('w') as f:
         f.write('\n'.join(rst))
@@ -74,3 +57,26 @@ def report_ishares(df):
         writer_name='html')
 
     return df.loc[idx]
+
+
+def _prepare_table(torst, tableformat):
+    col_len = []
+    for row in torst:
+        format_ = tableformat.get(row, '{}')
+        col_len.append(
+            max([len(format_.format(x)) for x in torst[row]] + [len(row), ])
+            )
+
+    formatter = ' '.join('{:<%d}' % c for c in col_len)
+
+    all_rows = []
+    for row in torst.iterrows():
+        ROW = _row2str(tableformat, row)
+        good_row = formatter.format(*ROW)
+        all_rows.append(good_row)
+
+    separator = ' '.join(['=' * c for c in col_len])
+    header = formatter.format(*[x.replace('\n', ' ') for x in torst])
+    rst = [separator, header, separator] + all_rows + [separator, ]
+
+    return rst
