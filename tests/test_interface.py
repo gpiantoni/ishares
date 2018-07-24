@@ -2,31 +2,27 @@ from pytest import raises
 
 from ishares.interface import iShares
 
+from .conftest import read_ishares
 
-all_etfs = None
 
 def test_interface():
-    global all_etfs
-    all_etfs = iShares()
+	all_etfs = read_ishares()
     all_etfs.report()
 
 
 def test_interface_isin():
-    global all_etfs
-
+	all_etfs = read_ishares()
     fund = all_etfs.get_fund(isin='IE0032895942')
     fund.report()
 
 
 def test_interface_nofund():
-    global all_etfs
-
+	all_etfs = read_ishares()
     with raises(ValueError):
         all_etfs.get_fund('XXXXXXX')
 
 
 def test_interface_manyfund():
-    global all_etfs
-
+	all_etfs = read_ishares()
     with raises(ValueError):
         all_etfs.get_fund('LQDA')
