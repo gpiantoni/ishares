@@ -18,7 +18,7 @@ COLS = [
 
 FORMAT = {
     'TER': '{:5.2f}',
-    'Netto-activa': '{:10.3f}B',
+    'Netto-activa': '{:.3f} B',
     'op jaarbasis (5 jr. (%))': '{:5.2f}',
     'Kenmerken (Uitkeringsrendement (%))': '{:5.2f}',
     }

@@ -7,7 +7,7 @@ from .report_all import _prepare_table
 TODAY = date.today()
 
 
-def corr_funds(fund1, fund2, n_years):
+def corr_funds(fund1, fund2, n_years=1):
     df1 = fund1.df
     df2 = fund2.df
     mdf = df1.merge(df2, on='Per')

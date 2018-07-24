@@ -116,7 +116,7 @@ def _fix_df(df, name):
     if FLOAT_COLS is not None:
         df[FLOAT_COLS] = df[FLOAT_COLS].apply(to_numeric, errors='coerce', axis=1)
 
-    if name == 'Historisch':
+    if name in ('Historisch', 'iShares ETFs'):
         df['Netto-activa'] /= 1e9
 
     return df

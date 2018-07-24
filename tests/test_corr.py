@@ -10,7 +10,7 @@ def test_correlation():
     fund0 = all_etfs.get_fund(isin='IE0008471009')
     fund1 = all_etfs.get_fund(isin='IE0031442068')
 
-    rst = corr_funds(fund0, fund1)
+    rst = corr_funds(fund0, fund1, 1)
 
     rst_file = SRC_PATH / ('corr' + '.rst')
     html_file = HTML_PATH / ('corr' + '.html')
