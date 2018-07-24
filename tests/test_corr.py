@@ -5,7 +5,7 @@ from .conftest import read_ishares
 
 
 def test_correlation():
-	all_etfs = read_ishares()
+    all_etfs = read_ishares()
 
     fund0 = all_etfs.get_fund(isin='IE0008471009')
     fund1 = all_etfs.get_fund(isin='IE0031442068')
