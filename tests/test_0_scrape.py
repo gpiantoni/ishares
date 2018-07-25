@@ -19,5 +19,5 @@ def test_download_all():
     assert content.startswith('<?xml version="1.0"?>')
     assert len(content) > 1200000
 
-    with (DOWNLOAD_PATH / ('all' + '.xls')).open('w') as f:
+    with (DOWNLOAD_PATH / ('all' + '.xls')).open('w', encoding='utf-8') as f:
         f.write(content)
