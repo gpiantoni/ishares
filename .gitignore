@@ -1,5 +1,9 @@
+__pycache__/
+*.egg-info/
+
 report/
 tests/download/
+ishares/downloaded/
 
 *.ipynb
 .ipynb_checkpoints/
@@ -7,3 +11,5 @@ tests/download/
 .pytest_cache/
 .coverage
 htmlcov/
+
+
