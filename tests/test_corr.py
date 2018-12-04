@@ -7,8 +7,8 @@ from .conftest import read_ishares
 def test_correlation():
     all_etfs = read_ishares()
 
-    fund0 = all_etfs.get_fund(isin='IE00BKM4GZ66')
-    fund1 = all_etfs.get_fund(isin='IE0031442068')
+    fund0 = all_etfs.get_fund(isin='IE0031442068')
+    fund1 = all_etfs.get_fund(isin='IE00B4L5YC18')
 
     rst = corr_funds(fund0, fund1, 1)[1]
 

@@ -46,6 +46,8 @@ class iShares():
 
 
 class Fund():
+    dividend = None
+
     def __init__(self, fund_id, name):
         self.id = fund_id
         self.name = name
@@ -53,9 +55,11 @@ class Fund():
         content = download_fund(fund_id)
         self.ws = WorkSheets(content)
         self.df = self.ws.read_worksheet('Historisch')
+        if 'Uitkeringen' in self.ws.worksheets:
+            self.dividend = self.ws.read_worksheet('Uitkeringen')
 
     def plot(self):
-        return create_fig(self.df)
+        return create_fig(self.df, self.dividend)
 
     def report(self):
         fig = create_fig(self.df)
