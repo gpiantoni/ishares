@@ -72,7 +72,7 @@ def _fix_xls(raw):
 
 def _convert_to_df(worksheet, name):
     if name == 'Posities':
-        del worksheet[0]
+        del worksheet[:3]
 
     elif name == 'Performance':
         del worksheet[:4]
