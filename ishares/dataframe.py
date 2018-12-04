@@ -1,7 +1,7 @@
 from datetime import date
 import xml.etree.ElementTree as ET
 
-from pandas import DataFrame, to_numeric, to_datetime
+from pandas import DataFrame, to_numeric, to_datetime, NaT
 
 from .constants.paths import ERROR_PATH
 
@@ -126,8 +126,14 @@ def _fix_df(df, name):
 
 
 def _to_date(s):
-    d, m, y = s.split('/')
-    return date(int(y), MONTHS[m], int(d))
+    try:
+        d, m, y = s.split('/')
+
+    except ValueError:
+        return NaT
+
+    else:
+        return date(int(y), MONTHS[m], int(d))
 
 
 def _read_worksheet(table, ns):
