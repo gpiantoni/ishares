@@ -63,7 +63,8 @@ def _fix_xls(raw):
     raw = raw.replace('&euro;', '€')
     raw = raw.replace('&copy;', '©')
     raw = raw.replace('&Acirc;', '')  # non-breaking char
-    
+    raw = raw.replace('&', '')  # and
+
     if '<ss:Style' in raw:
         raw = raw.replace('</Style>', '</ss:Style>')
     return raw
