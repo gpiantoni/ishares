@@ -19,7 +19,7 @@ def download_fund(id_fund):
 
     # parse html page
     resp_page = SESSION.get(SINGLE_FUND_URL.format(id_fund=id_fund))
-    soup_page = BeautifulSoup(resp_page.content.decode(), 'lxml')
+    soup_page = BeautifulSoup(resp_page.content.decode())
     a_href = soup_page.find("a", {'data-link-event': "fund download:common"})
     download_url = urljoin(resp_page.url, a_href.attrs['href'])
 
