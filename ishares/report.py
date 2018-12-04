@@ -34,25 +34,29 @@ def write_report(fig, fund_id):
         )
 
 
-def create_fig(df):
-    trace1 = go.Scatter(
-        x=df['Per'],
-        y=df['NAV'],
-        name='NAV'
-    )
-    trace2 = go.Scatter(
-        x=df['Per'],
-        y=df['Uitgegeven aandelen'],
-        name='Uitgegeven aandelen',
-        yaxis='y2'
-    )
-    data = [trace1, trace2]
+def create_fig(df, dividend=None):
+    data = [
+        go.Scatter(
+            x=df['Per'],
+            y=df['NAV'],
+            name='NAV'
+        )]
+
+    if dividend is not None:
+        data.append(
+            go.Scatter(
+                x=dividend['Uitkeringsdatum'],
+                y=dividend['Totale uitkering'],
+                name='Dividend',
+                yaxis='y2'
+            ))
+
     layout = go.Layout(
         yaxis=dict(
             title='NAV'
         ),
         yaxis2=dict(
-            title='Uitgegeven aandelen',
+            title='dividends',
             titlefont=dict(
                 color='rgb(148, 103, 189)'
             ),
@@ -63,7 +67,9 @@ def create_fig(df):
             side='right'
         )
     )
+
     fig = go.Figure(data=data, layout=layout)
+
     return fig
 
 
