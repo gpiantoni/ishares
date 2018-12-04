@@ -1,8 +1,10 @@
+from bs4 import BeautifulSoup
 from requests import Session
+from requests.compat import urljoin
 from pathlib import Path
 
 ENTRY_URL = 'https://www.ishares.com/nl/particuliere-belegger/nl/?siteEntryPassthrough=true&locale=nl_NL&userType=individual'
-SINGLE_FUND_URL = 'https://www.ishares.com/nl/particuliere-belegger/nl/{id_fund}/fund-download.dl'
+SINGLE_FUND_URL = 'https://www.ishares.com/nl/particuliere-belegger/nl/producten/{id_fund}/'
 ALL_FUNDS_URL = 'https://www.ishares.com/nl/particuliere-belegger/nl/producten/etf-product-list/1524727818159.ajax'
 
 SESSION = None
@@ -15,8 +17,15 @@ def download_fund(id_fund):
         print('make session')
         SESSION = site_session()
 
-    resp = SESSION.get(SINGLE_FUND_URL.format(id_fund=id_fund))
-    return strip_bom(resp.content).decode('utf-8')
+    # parse html page
+    resp_page = SESSION.get(SINGLE_FUND_URL.format(id_fund=id_fund))
+    soup_page = BeautifulSoup(resp_page.content.decode(), 'lxml')
+    a_href = soup_page.find("a", {'data-link-event': "fund download:common"})
+    download_url = urljoin(resp_page.url, a_href.attrs['href'])
+
+    # download url
+    resp_xls = SESSION.get(download_url)
+    return strip_bom(resp_xls.content).decode('utf-8')
 
 
 def download_all():
