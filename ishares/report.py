@@ -48,6 +48,7 @@ def create_fig(df, dividend=None):
                 x=dividend['Uitkeringsdatum'],
                 y=dividend['Totale uitkering'],
                 name='Dividend',
+                mode='markers',
                 yaxis='y2'
             ))
 
@@ -64,7 +65,8 @@ def create_fig(df, dividend=None):
                 color='rgb(148, 103, 189)'
             ),
             overlaying='y',
-            side='right'
+            side='right',
+            rangemode='tozero',
         )
     )
 
