@@ -62,5 +62,5 @@ class Fund():
         return create_fig(self.df, self.dividend)
 
     def report(self):
-        fig = create_fig(self.df)
+        fig = self.plot()
         write_report(fig, self.name)
