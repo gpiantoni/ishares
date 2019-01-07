@@ -16,7 +16,7 @@ cache:
 install: 
  # install requirements
  - pip install pandas requests beautifulsoup4
- - pip install pytest pytest-cov codecov plotly
+ - pip install -U pytest pytest-cov codecov plotly
  - pip install docutils
  - pip install -e .
 
