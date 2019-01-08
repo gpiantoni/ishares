@@ -1,11 +1,9 @@
 from ishares.corr import corr_funds
 from ishares.report_all import publish
 from ishares.constants.paths import SRC_PATH, HTML_PATH
-from .conftest import read_ishares
 
 
-def test_correlation():
-    all_etfs = read_ishares()
+def test_correlation(all_etfs):
 
     fund0 = all_etfs.get_fund(isin='IE0031442068')
     fund1 = all_etfs.get_fund(isin='IE00B4L5YC18')
